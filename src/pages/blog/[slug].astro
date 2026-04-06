@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'first-post' } },
+    { params: { slug: 'second-post' } },
+  ];
+}
+
+const { slug } = Astro.params;
+---
+
+<BaseLayout title={`Blog: ${slug}`}>
+  <h1>{slug}</h1>
+  <p>This is a blog post page for: {slug}</p>
+</BaseLayout>
