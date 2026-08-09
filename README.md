@@ -11,6 +11,10 @@ npm install
 npm run dev
 ```
 
+After that, ordinary content or layout changes do not require any additional npm or Astro commands. Just edit files in `src/` or `public/` and refresh your browser. The development server provides live updates.
+
+If you add a new dependency or change package configuration, run `npm install` again and restart the development server.
+
 Create a production build with:
 
 ```sh
