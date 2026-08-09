@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# parkergustafson.com
+
+Parker Gustafson’s portfolio and writing site, built with Astro and deployed to GitHub Pages.
+
+## Local development
+
+Requires a current Node.js LTS release.
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Create a production build with:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run build
+npm run preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Publishing a blog post
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Copy `src/templates/blog-post.md` into `src/content/blog/` and choose a descriptive lowercase filename.
+2. Fill in the required `title`, `description`, and `pubDate` fields.
+3. Keep `draft: true` while writing. Change it to `false` when the post is ready.
+4. Use standard Markdown links rather than Obsidian wiki links. LaTeX-style inline and display math are supported.
+5. Run the production build before committing.
 
-Any static assets, like images, can be placed in the `public/` directory.
+For the safest Obsidian workflow, open this repository—or only its public blog directory—as a separate vault. Do not connect a private knowledge-base vault to this public repository.
 
-## 🧞 Commands
+## Replacing placeholders
 
-All commands are run from the root of the project, from a terminal:
+- Add approved project and research details to their route pages.
+- Add an approved résumé at `public/resume.pdf`, then replace the résumé empty state with a download link.
+- Add only confirmed external profile and contact URLs to the footer.
+- Remove the sample article after the first real post is published.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Deployment and domain
 
-## 👀 Want to learn more?
+Pushing `main` runs `.github/workflows/deploy.yml`. In repository settings, GitHub Pages must use **GitHub Actions** as its source and `www.parkergustafson.com` as its custom domain.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+GoDaddy DNS should contain:
+
+- `www` CNAME → `pgusto34.github.io`
+- `@` A → `185.199.108.153`
+- `@` A → `185.199.109.153`
+- `@` A → `185.199.110.153`
+- `@` A → `185.199.111.153`
+
+Remove conflicting parked records, do not add wildcard records, and enable **Enforce HTTPS** in GitHub after certificate provisioning completes.

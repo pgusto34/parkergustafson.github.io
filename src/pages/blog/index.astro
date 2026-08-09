@@ -1,8 +1,67 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
-<BaseLayout title="Blog">
-  <h1>Blog</h1>
-  <p>Welcome to the blog index.</p>
+<BaseLayout title="Writing" description="Technical notes and long-form writing by Parker Gustafson.">
+  <header class="page-intro page-shell">
+    <p class="eyebrow">Writing</p>
+    <h1>Notes for thinking clearly.</h1>
+    <p>Technical ideas, research notes, and essays—with support for code, diagrams, and mathematical notation.</p>
+  </header>
+  <section class="content-section page-shell">
+    {tags.length > 0 && (
+      <nav class="filter-bar" aria-label="Filter posts by tag">
+        <button type="button" class="tag-filter is-active" data-tag="all" aria-pressed="true">All</button>
+        {tags.map((tag) => <button type="button" class="tag-filter" data-tag={tag} aria-pressed="false">{tag}</button>)}
+      </nav>
+    )}
+    <p id="filter-status" class="sr-only" aria-live="polite"></p>
+    <div class="blog-list" id="blog-list">
+      {posts.map((post) => (
+        <div data-post data-tags={JSON.stringify(post.data.tags)}>
+          <BlogCard
+            href={`/blog/${post.id}/`}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            label={post.data.placeholder ? "Sample" : undefined}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>("[data-tag]");
+    const posts = document.querySelectorAll<HTMLElement>("[data-post]");
+    const status = document.querySelector<HTMLElement>("#filter-status");
+    const selectTag = (tag: string) => {
+      let visible = 0;
+      posts.forEach((post) => {
+        const tags = JSON.parse(post.dataset.tags ?? "[]");
+        const show = tag === "all" || tags.includes(tag);
+        post.hidden = !show;
+        if (show) visible += 1;
+      });
+      buttons.forEach((button) => {
+        const active = button.dataset.tag === tag;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      if (status) status.textContent = `${visible} ${visible === 1 ? "post" : "posts"} shown`;
+      const url = new URL(window.location.href);
+      if (tag === "all") url.searchParams.delete("tag");
+      else url.searchParams.set("tag", tag);
+      history.replaceState({}, "", url);
+    };
+    buttons.forEach((button) => button.addEventListener("click", () => selectTag(button.dataset.tag ?? "all")));
+    const initialTag = new URLSearchParams(window.location.search).get("tag");
+    if (initialTag && [...buttons].some((button) => button.dataset.tag === initialTag)) selectTag(initialTag);
+  </script>
 </BaseLayout>

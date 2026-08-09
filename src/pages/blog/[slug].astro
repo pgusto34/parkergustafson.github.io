@@ -1,17 +1,63 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export function getStaticPaths() {
-  return [
-    { params: { slug: 'first-post' } },
-    { params: { slug: 'second-post' } },
-  ];
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      newer: posts[index - 1],
+      older: posts[index + 1],
+    },
+  }));
 }
 
-const { slug } = Astro.params;
+interface Props {
+  post: CollectionEntry<"blog">;
+  newer?: CollectionEntry<"blog">;
+  older?: CollectionEntry<"blog">;
+}
+
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const date = post.data.pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC",
+});
 ---
 
-<BaseLayout title={`Blog: ${slug}`}>
-  <h1>{slug}</h1>
-  <p>This is a blog post page for: {slug}</p>
+<BaseLayout title={post.data.title} description={post.data.description} type="article">
+  <article class="article-shell">
+    <header class="article-header">
+      <a class="back-link" href="/blog/">← All writing</a>
+      <div class="article-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{date}</time>
+        {post.data.placeholder && <span class="status-pill">Sample content</span>}
+      </div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      {post.data.tags.length > 0 && <ul class="tag-list">{post.data.tags.map((tag) => <li><a href={`/blog/?tag=${encodeURIComponent(tag)}`}>{tag}</a></li>)}</ul>}
+    </header>
+    <div class:list={["article-layout", { "has-toc": headings.length > 1 }]}>
+      {headings.length > 1 && (
+        <aside class="toc">
+          <p class="eyebrow">On this page</p>
+          <nav aria-label="Table of contents">
+            {headings.filter((heading) => heading.depth <= 3).map((heading) => <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>{heading.text}</a>)}
+          </nav>
+        </aside>
+      )}
+      <div class="prose"><Content /></div>
+    </div>
+    <nav class="post-nav" aria-label="Post navigation">
+      {newer ? <a href={`/blog/${newer.id}/`}><span>Newer</span><strong>{newer.data.title}</strong></a> : <span></span>}
+      {older && <a class="post-nav-next" href={`/blog/${older.id}/`}><span>Older</span><strong>{older.data.title}</strong></a>}
+    </nav>
+  </article>
 </BaseLayout>

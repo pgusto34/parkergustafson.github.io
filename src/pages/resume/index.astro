@@ -1,8 +1,19 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
 ---
 
-<BaseLayout title="Resume">
-  <h1>Resume</h1>
-  <p>This is the resume page.</p>
+<BaseLayout title="Résumé" description="Résumé for Parker Gustafson.">
+  <header class="page-intro page-shell">
+    <p class="eyebrow">Résumé</p>
+    <h1>Experience, in brief.</h1>
+    <p>A downloadable résumé will be available after the current document has been reviewed for publication.</p>
+  </header>
+  <section class="content-section page-shell">
+    <EmptyState
+      eyebrow="Document pending"
+      title="Résumé not yet published"
+      text="Add the approved file as public/resume.pdf, then replace this notice with a download link. No résumé data has been reconstructed from third-party sources."
+    />
+  </section>
 </BaseLayout>

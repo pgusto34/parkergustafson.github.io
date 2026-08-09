@@ -1,8 +1,19 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
 ---
 
-<BaseLayout title="About">
-  <h1>About</h1>
-  <p>This is the about page.</p>
+<BaseLayout title="About" description="About Parker Gustafson and this evolving portfolio.">
+  <header class="page-intro page-shell">
+    <p class="eyebrow">About</p>
+    <h1>A place to connect the dots.</h1>
+    <p>This portfolio is designed to document work and interests with context—not just collect links.</p>
+  </header>
+  <section class="content-section page-shell">
+    <EmptyState
+      eyebrow="Biography pending"
+      title="The full introduction is still being written."
+      text="Personal and professional details will appear here once Parker has reviewed and supplied them. Nothing has been inferred from public profiles."
+    />
+  </section>
 </BaseLayout>

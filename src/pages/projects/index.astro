@@ -1,8 +1,18 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
 ---
 
-<BaseLayout title="Projects">
-  <h1>Projects</h1>
-  <p>This is the projects page.</p>
+<BaseLayout title="Projects" description="Selected projects and software by Parker Gustafson.">
+  <header class="page-intro page-shell">
+    <p class="eyebrow">Selected work</p>
+    <h1>Projects built with intent.</h1>
+    <p>Case studies will cover the problem, design choices, implementation, and what changed as a result.</p>
+  </header>
+  <section class="content-section page-shell">
+    <div class="placeholder-grid">
+      <EmptyState eyebrow="Project 01" title="Case study coming soon" text="A confirmed project will replace this card with links, technologies, and outcomes." />
+      <EmptyState eyebrow="Project 02" title="Case study coming soon" text="This layout is ready for another selected project without requiring a page redesign." />
+    </div>
+  </section>
 </BaseLayout>

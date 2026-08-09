@@ -1,8 +1,18 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
 ---
 
-<BaseLayout title="Research">
-  <h1>Research</h1>
-  <p>This is the research page.</p>
+<BaseLayout title="Research" description="Research questions, papers, and investigations by Parker Gustafson.">
+  <header class="page-intro page-shell">
+    <p class="eyebrow">Research</p>
+    <h1>Questions worth following.</h1>
+    <p>This section will collect formal work and exploratory notes while keeping the distinction between them clear.</p>
+  </header>
+  <section class="content-section page-shell">
+    <div class="placeholder-grid">
+      <EmptyState eyebrow="Research entry" title="Details coming soon" text="No topic, affiliation, paper, or result is being claimed until Parker supplies the source material." />
+      <EmptyState eyebrow="Reading notes" title="A future research notebook" text="Shorter investigations can live here alongside formal work, clearly labeled by type." />
+    </div>
+  </section>
 </BaseLayout>

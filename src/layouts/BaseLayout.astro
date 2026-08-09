@@ -1,38 +1,58 @@
 ---
-const { title } = Astro.props;
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "katex/dist/katex.min.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+}
+
+const {
+  title = "Parker Gustafson",
+  description = "Parker Gustafson’s personal portfolio, projects, research, and writing.",
+  image = "/og.png",
+  type = "website",
+} = Astro.props;
+const pageTitle = title === "Parker Gustafson" ? title : `${title} — Parker Gustafson`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = image ? new URL(image, Astro.site) : undefined;
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101312" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" type="application/rss+xml" title="Parker Gustafson’s writing" href="/rss.xml" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Parker Gustafson" />
+    {imageURL && <meta property="og:image" content={imageURL} />}
+    <meta name="twitter:card" content={imageURL ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {imageURL && <meta name="twitter:image" content={imageURL} />}
+    <title>{pageTitle}</title>
   </head>
-
   <body>
-    <header>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/about/">About</a>
-        <a href="/projects/">Projects</a>
-        <a href="/research/">Research</a>
-        <a href="/resume/">Resume</a>
-        <a href="/blog/">Blog</a>
-        <a href="/travel/">Travel</a>
-        <a href="/books/">Books</a>
-        <a href="/movies/">Movies</a>
-      </nav>
-    </header>
-
-    <main>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Nav />
+    <main id="main-content">
       <slot />
     </main>
-
-    <footer>
-      <a href="mailto:you@domain.com">Email</a>
-      <a href="https://www.linkedin.com/in/YOUR_HANDLE/">LinkedIn</a>
-      <a href="https://www.goodreads.com/user/show/YOUR_ID">Goodreads</a>
-      <a href="https://letterboxd.com/YOUR_HANDLE/">Letterboxd</a>
-    </footer>
+    <Footer />
   </body>
 </html>
