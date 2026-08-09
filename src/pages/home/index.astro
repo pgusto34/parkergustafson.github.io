@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+
+const recentPosts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+---
+
+<BaseLayout description="Parker Gustafson’s personal portfolio—a home for projects, research, and technical writing.">
+  <section class="hero page-shell">
+    <div class="hero-copy">
+      <p class="eyebrow">Portfolio · Research · Writing</p>
+      <h1>Building carefully.<br /><em>Learning in public.</em></h1>
+      <p class="hero-lede">
+        This is Parker Gustafson’s corner of the internet: a growing record of projects,
+        research, technical notes, and interests beyond the screen.
+      </p>
+      <div class="button-row">
+        <a class="button button-primary" href="/projects/">Explore projects <span aria-hidden="true">↗</span></a>
+        <a class="button button-secondary" href="/about/">About this site</a>
+      </div>
+    </div>
+    <aside class="hero-note" aria-label="Site status">
+      <span class="signal" aria-hidden="true"></span>
+      <p class="eyebrow">Currently</p>
+      <h2>Work in progress</h2>
+      <p>The structure is here. Real project, research, and personal details will replace the clearly marked placeholders as they are ready.</p>
+    </aside>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="explore-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 id="explore-heading">A map of the work</h2>
+      </div>
+      <p>Separate spaces for things built, questions explored, and ideas worth writing down.</p>
+    </div>
+    <div class="feature-grid">
+      <a class="feature-card accent-blue" href="/projects/">
+        <span class="card-number">01</span>
+        <h3>Projects</h3>
+        <p>Selected software and experiments, with room for process notes and outcomes.</p>
+        <span class="card-link">View projects <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="feature-card accent-coral" href="/research/">
+        <span class="card-number">02</span>
+        <h3>Research</h3>
+        <p>Questions, papers, and investigations presented without overstating unfinished work.</p>
+        <span class="card-link">View research <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="feature-card accent-gold" href="/blog/">
+        <span class="card-number">03</span>
+        <h3>Writing</h3>
+        <p>Technical notes and long-form thinking, with first-class support for code and math.</p>
+        <span class="card-link">Read the blog <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="interests-heading">
+    <div class="split-panel">
+      <div>
+        <p class="eyebrow">Beyond the work</p>
+        <h2 id="interests-heading">A broader notebook</h2>
+        <p>Small collections for places visited, books considered, and films remembered—ready for real entries when Parker chooses to share them.</p>
+      </div>
+      <nav class="interest-links" aria-label="Personal collections">
+        <a href="/travel/"><span>Travel</span><span aria-hidden="true">↗</span></a>
+        <a href="/books/"><span>Books</span><span aria-hidden="true">↗</span></a>
+        <a href="/movies/"><span>Movies</span><span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="recent-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">From the blog</p>
+        <h2 id="recent-heading">Recent writing</h2>
+      </div>
+      <a class="text-link" href="/blog/">All writing <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="blog-grid">
+      {recentPosts.map((post) => (
+        <BlogCard
+          href={`/blog/${post.id}/`}
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          tags={post.data.tags}
+          label={post.data.placeholder ? "Sample" : undefined}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
