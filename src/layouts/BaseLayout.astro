@@ -1,5 +1,5 @@
 ---
-import Nav from "../components/Nav.astro";
+import Nav from "../components/Nav";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 import "katex/dist/katex.min.css";
@@ -49,7 +49,7 @@ const imageURL = image ? new URL(image, Astro.site) : undefined;
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <Nav />
+    <Nav pathname={Astro.url.pathname} client:load />
     <main id="main-content">
       <slot />
     </main>

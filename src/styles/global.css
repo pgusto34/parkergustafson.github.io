@@ -403,16 +403,19 @@ h1, h2, h3 { line-height: 1.08; letter-spacing: -.045em; }
   text-transform: uppercase;
 }
 .tag-list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
-.tag-list a {
+.tag-list a,
+.tag-list button {
   display: inline-flex;
   padding: .27rem .55rem;
   border: 1px solid var(--line);
   border-radius: 99px;
+  background: transparent;
   color: var(--muted);
   font-family: var(--mono);
   font-size: .67rem;
   text-decoration: none;
 }
+.tag-list button { cursor: pointer; }
 
 .page-intro { padding-block: clamp(5.5rem, 11vw, 9rem) clamp(3.5rem, 7vw, 5.5rem); }
 .page-intro h1 { max-width: 900px; margin-bottom: 1.25rem; font-size: clamp(3rem, 7vw, 6rem); }
@@ -495,17 +498,17 @@ h1, h2, h3 { line-height: 1.08; letter-spacing: -.045em; }
   :root { --page: min(100% - 1.5rem, 1160px); }
   .desktop-nav { display: none; }
   .mobile-nav { display: block; }
-  .mobile-nav summary {
+  .mobile-nav-toggle {
     padding: .45rem .7rem;
     border: 1px solid var(--line);
     border-radius: .55rem;
+    background: transparent;
+    color: var(--ink);
     cursor: pointer;
-    list-style: none;
     font-size: .84rem;
     font-weight: 700;
   }
-  .mobile-nav summary::-webkit-details-marker { display: none; }
-  .mobile-nav nav {
+  .mobile-nav-panel {
     position: absolute;
     right: 0;
     top: calc(100% + .7rem);
@@ -517,8 +520,9 @@ h1, h2, h3 { line-height: 1.08; letter-spacing: -.045em; }
     background: var(--surface-strong);
     box-shadow: var(--shadow);
   }
-  .mobile-nav nav a { padding: .7rem; border-radius: .45rem; text-decoration: none; }
-  .mobile-nav nav a[aria-current="page"] { background: var(--blue-soft); }
+  .mobile-nav-panel[hidden] { display: none; }
+  .mobile-nav-panel a { padding: .7rem; border-radius: .45rem; text-decoration: none; }
+  .mobile-nav-panel a[aria-current="page"] { background: var(--blue-soft); }
   .mobile-secondary { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: .5rem; padding-top: .5rem; border-top: 1px solid var(--line); }
   .mobile-secondary a { font-size: .75rem; text-align: center; }
   .hero { min-height: auto; grid-template-columns: 1fr; align-items: start; gap: 3rem; }
