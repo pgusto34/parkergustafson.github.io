@@ -1,10 +1,12 @@
 import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
 import { unified } from "@astrojs/markdown-remark";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
 export default defineConfig({
   site: "https://www.parkergustafson.com",
+  integrations: [react()],
   markdown: {
     processor: unified({
       remarkPlugins: [remarkMath],
